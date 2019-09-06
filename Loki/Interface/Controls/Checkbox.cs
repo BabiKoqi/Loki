@@ -6,7 +6,7 @@ namespace Loki.Interface.Controls {
         public override int GetHashCode() => _value.Value.GetHashCode();
 
         internal Checkbox(string name, ValueContainer<bool> value = null) : base(name) {
-            _value = value ?? new ValueContainer<bool>(false);
+            _value = value ?? new ValueContainer<bool>();
         }
 
         readonly ValueContainer<bool> _value;
@@ -15,11 +15,6 @@ namespace Loki.Interface.Controls {
         internal override void OnLeft() => OnPressed();
         internal override void OnRight() => OnPressed();
 
-        internal override void Draw() {
-            Console.Write(Name + " ");
-            Console.ForegroundColor = _value.Value ? ConsoleColor.Green : ConsoleColor.Red;
-            Console.WriteLine(_value.Value.ToString().ToUpperInvariant());
-            Console.ResetColor();
-        }
+        internal override void Draw(bool currentlySelected) => Console.WriteLine($"[{(_value.Value ? "√" : "X")}] {Name}");
     }
 }

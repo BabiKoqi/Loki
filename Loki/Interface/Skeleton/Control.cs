@@ -8,6 +8,7 @@ namespace Loki.Interface.Skeleton {
         internal virtual void OnLeft() { }
         internal virtual void OnRight() { }
         internal virtual void OnPressed() { }
-        internal virtual void Draw() => Console.WriteLine(Name);
+        internal virtual void OnOtherKey(ConsoleKeyInfo info) { }
+        internal virtual void Draw(bool currentlySelected) => Console.WriteLine(Name);
     }
 }

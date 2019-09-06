@@ -9,7 +9,13 @@ namespace Loki.Interface.Controls {
             Console.CursorVisible = false;
         }
 
-        internal override void Draw() => Console.WriteLine(Name + " >>");
+        internal override void Draw(bool currentlySelected) => Console.WriteLine($">> {Name}");
+
+        internal override void OnPressed() {
+            Console.Clear();
+            DrawMenu();
+            Console.Clear();
+        }
         
         internal IList<Control> Options { get; } = new List<Control>();
 
@@ -17,15 +23,22 @@ namespace Loki.Interface.Controls {
         int _currentHash;
 
         internal void DrawMenu() {
+            MenuNesting.Add(Name);
+            var reDraw = true;
             while (true) {
-                if (!NeedToRedraw(out var pressed, out var key))
+                if (!NeedToRedraw(out var pressed, out var key) && !reDraw) {
                     continue;
-                
+                }
+
+                reDraw = false;
+
+                Console.Title = MenuNesting.Render();
                 Console.Clear();
+                Console.CursorVisible = false;
                 Console.WriteLine(Name + "\n");
 
                 if (pressed) {
-                    switch (key) {
+                    switch (key.Value.Key) {
                         case ConsoleKey.UpArrow:
                             _currentIndex--;
                             break;
@@ -34,14 +47,19 @@ namespace Loki.Interface.Controls {
                             break;
                         case ConsoleKey.Enter:
                             Options[_currentIndex].OnPressed();
-                            break;
+                            reDraw = true;
+                            continue;
                         case ConsoleKey.LeftArrow:
                             Options[_currentIndex].OnLeft();
                             break;
                         case ConsoleKey.RightArrow:
                             Options[_currentIndex].OnRight();
                             break;
+                        default:
+                            Options[_currentIndex].OnOtherKey(key.Value);
+                            break;
                         case ConsoleKey.Escape:
+                            MenuNesting.Remove();
                             return;
                     }
                 }
@@ -53,14 +71,14 @@ namespace Loki.Interface.Controls {
                         Console.Write("-> ");
                         Console.ResetColor();
                     } else Console.Write("   ");
-                    Options[i].Draw();
+                    Options[i].Draw(_currentIndex == i);
                 }
             }
         }
 
-        bool NeedToRedraw(out bool pressed, out ConsoleKey keyPressed) {
+        bool NeedToRedraw(out bool pressed, out ConsoleKeyInfo? keyPressed) {
             pressed = false;
-            keyPressed = ConsoleKey.A;
+            keyPressed = null;
             var prev = _currentHash;
             _currentHash = Options.Sum(ctrl => ctrl.GetHashCode());
             if (prev != _currentHash)
@@ -69,11 +87,10 @@ namespace Loki.Interface.Controls {
             if (!Console.KeyAvailable)
                 return false;
 
-            var key = Console.ReadKey(true).Key;
-            var arr = new [] { ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.Escape };
+            var key = Console.ReadKey(true);
             pressed = true;
             keyPressed = key;
-            return arr.Contains(key);
+            return true;
         }
 
         void NormalizeIndex() {
