@@ -1,16 +1,22 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using Newtonsoft.Json;
+using Loki.Configuration.Skeleton;
 
 namespace Loki.Configuration {
     class Config {
-        [JsonProperty("name")]
-        internal string Name { get; set; }
-        
-        [JsonProperty("responses")]
-        internal IList<Response> Responses { get; set; }
+        [JsonRequired]
+        public string Name { get; set; } = "LokiConfig1";
 
-        internal void Save(string path) => File.WriteAllText(path, JsonConvert.SerializeObject(this, Formatting.Indented));
-        internal static Config Load(string path) => JsonConvert.DeserializeObject<Config>(File.ReadAllText(path));
+        [JsonRequired]
+        public string Author { get; set; } = "xsilent007";
+
+        [JsonRequired]
+        public string ExecutablePath { get; set; }
+
+        //This can be used if Assembly.EntryPoint isn't the real entrypoint
+        public int RealEntryPointMDToken { get; set; }
+
+        [JsonRequired]
+        public IList<ResponseBase> Responses { get; set; } = new List<ResponseBase>();
     }
 }

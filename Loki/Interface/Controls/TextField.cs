@@ -5,19 +5,18 @@ using Loki.Interface.Skeleton;
 
 namespace Loki.Interface.Controls {
     class TextField : Control {
-        internal TextField(string name, string def = "") : base(name) => Text = def.ToCharArray().ToList();
-        
-        internal IList<char> Text { get; set; }
+        public override int GetHashCode() => EqualityComparer<string>.Default.GetHashCode(Text);
+
+        internal TextField(string name, string def = "") : base(name) => Text = def;
+
+        internal string Text {
+            get => new string(_text.ToArray());
+            set => _text = value.ToCharArray().ToList();
+        }
+
+        IList<char> _text;
 
         int _curPos;
-
-        /*internal override void OnPressed() {
-            Console.Clear();
-            Console.WriteLine("Previous value: " + Text);
-            Console.Write("New value: ");
-            Text = Console.ReadLine().ToCharArray();
-            Console.Clear();
-        }*/
 
         internal override void OnLeft() {
             _curPos--;
@@ -32,30 +31,30 @@ namespace Loki.Interface.Controls {
         void Normalize() {
             if (_curPos < 0)
                 _curPos = 0;
-            else if (_curPos > Text.Count)
-                _curPos = Text.Count;
+            else if (_curPos > _text.Count)
+                _curPos = _text.Count;
         }
 
         internal override void OnOtherKey(ConsoleKeyInfo info) {
             Normalize();
             var key = info.KeyChar;
             
-            if (_curPos - 1 < 0 && key == '\b')
+            if (_curPos - 1 < 0 && info.Key == ConsoleKey.Backspace)
                 return;
 
-            if (_curPos >= Text.Count && info.Key == ConsoleKey.Delete)
+            if (_curPos >= _text.Count && info.Key == ConsoleKey.Delete)
                 return;
             
             //Backspace
-            if (key == '\b') {
-                Text.RemoveAt(_curPos - 1);
+            if (info.Key == ConsoleKey.Backspace) {
+                _text.RemoveAt(_curPos - 1);
                 _curPos--;
                 return;
             }
 
             //Delete key
             if (info.Key == ConsoleKey.Delete) {
-                Text.RemoveAt(_curPos);
+                _text.RemoveAt(_curPos);
                 return;
             }
 
@@ -65,18 +64,18 @@ namespace Loki.Interface.Controls {
             }
 
             if (info.Key == ConsoleKey.End) {
-                _curPos = Text.Count;
+                _curPos = _text.Count;
                 return;
             }
 
-            Text.Insert(_curPos, key);
+            _text.Insert(_curPos, key);
             _curPos++;
         }
         
         internal override void Draw(bool currentlySelected) {
             Console.Write(Name + " ");
 
-            if (Text.Count < 1) {
+            if (_text.Count < 1) {
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("<EMPTY>");
                 Console.ResetColor();
@@ -88,19 +87,19 @@ namespace Loki.Interface.Controls {
                 Console.ForegroundColor = ConsoleColor.Black;
             }
 
-            for (var i = 0; i < Text.Count; i++) {
+            for (var i = 0; i < _text.Count; i++) {
                 if (currentlySelected && i == _curPos) {
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write(Text[i]);
+                    Console.Write(_text[i]);
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
                     continue;
                 }
-                Console.Write(Text[i]);
+                Console.Write(_text[i]);
             }
 
-            if (currentlySelected && _curPos == Text.Count) {
+            if (currentlySelected && _curPos == _text.Count) {
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("|");

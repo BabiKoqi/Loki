@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using Loki.Interface.Skeleton;
 
 namespace Loki.Interface.Controls {
     class Checkbox : Control {
-        public override int GetHashCode() => _value.Value.GetHashCode();
+        public override int GetHashCode() => EqualityComparer<bool>.Default.GetHashCode(_value);
 
-        internal Checkbox(string name, ValueContainer<bool> value = null) : base(name) {
-            _value = value ?? new ValueContainer<bool>();
+        internal Checkbox(string name, bool value = false) : base(name) {
+            _value = value;
         }
 
-        readonly ValueContainer<bool> _value;
+        bool _value;
 
-        internal override void OnPressed() => _value.Value = !_value.Value;
+        internal override void OnPressed() => _value = !_value;
         internal override void OnLeft() => OnPressed();
         internal override void OnRight() => OnPressed();
 
-        internal override void Draw(bool currentlySelected) => Console.WriteLine($"[{(_value.Value ? "√" : "X")}] {Name}");
+        internal override void Draw(bool currentlySelected) => Console.WriteLine($"[{(_value ? "√" : "X")}] {Name}");
     }
 }

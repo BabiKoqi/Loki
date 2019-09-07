@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Loki.Interface.Skeleton;
 
 namespace Loki.Interface.Controls {
-    abstract class Menu : Control {
-        internal Menu(string name) : base(name) {
-            Console.CursorVisible = false;
-        }
+    class Menu : Control {
+        internal Menu(string name) : base(name) { }
 
-        internal override void Draw(bool currentlySelected) => Console.WriteLine($">> {Name}");
+        internal override void Draw(bool currentlySelected) => Console.WriteLine($"{Name} >>");
 
         internal override void OnPressed() {
             Console.Clear();
@@ -18,14 +15,16 @@ namespace Loki.Interface.Controls {
         }
         
         internal IList<Control> Options { get; } = new List<Control>();
+        internal bool KeepDrawing { get; set; } = true;
 
         int _currentIndex;
         int _currentHash;
 
-        internal void DrawMenu() {
+        internal virtual void DrawMenu() {
             MenuNesting.Add(Name);
             var reDraw = true;
-            while (true) {
+            KeepDrawing = true;
+            while (KeepDrawing) {
                 if (!NeedToRedraw(out var pressed, out var key) && !reDraw) {
                     continue;
                 }
@@ -59,8 +58,8 @@ namespace Loki.Interface.Controls {
                             Options[_currentIndex].OnOtherKey(key.Value);
                             break;
                         case ConsoleKey.Escape:
-                            MenuNesting.Remove();
-                            return;
+                            KeepDrawing = false;
+                            break;
                     }
                 }
 
@@ -74,13 +73,16 @@ namespace Loki.Interface.Controls {
                     Options[i].Draw(_currentIndex == i);
                 }
             }
+            MenuNesting.Remove();
         }
 
         bool NeedToRedraw(out bool pressed, out ConsoleKeyInfo? keyPressed) {
             pressed = false;
             keyPressed = null;
             var prev = _currentHash;
-            _currentHash = Options.Sum(ctrl => ctrl.GetHashCode());
+            _currentHash = 0;
+            foreach (var ctrl in Options)
+                unchecked { _currentHash += ctrl.GetHashCode(); }
             if (prev != _currentHash)
                 return true;
 

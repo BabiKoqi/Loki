@@ -47,12 +47,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Configuration\Condition.cs" />
         <Compile Include="Configuration\Config.cs" />
-        <Compile Include="Configuration\ExternalResponse.cs" />
-        <Compile Include="Configuration\FileResponse.cs" />
-        <Compile Include="Configuration\Response.cs" />
-        <Compile Include="Configuration\TextResponse.cs" />
         <Compile Include="Interface\Controls\Button.cs" />
         <Compile Include="Interface\Controls\Checkbox.cs" />
         <Compile Include="Interface\Controls\Label.cs" />
@@ -61,12 +56,24 @@
         <Compile Include="Interface\MainMenu.cs" />
         <Compile Include="Interface\Skeleton\Control.cs" />
         <Compile Include="Interface\Skeleton\MenuNesting.cs" />
-        <Compile Include="Interface\Skeleton\ValueContainer.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Interface\ConfigMenu.cs" />
+        <Compile Include="Configuration\Skeleton\Condition.cs" />
+        <Compile Include="Configuration\ConfigManager.cs" />
+        <Compile Include="Interface\Skeleton\Misc.cs" />
+        <Compile Include="Configuration\Skeleton\ResponseBase.cs" />
+        <Compile Include="Configuration\Responses\TextResponse.cs" />
+        <Compile Include="Configuration\Skeleton\Converter.cs" />
+        <Compile Include="Configuration\Responses\FileResponse.cs" />
+        <Compile Include="Interface\ResponseMenu.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Configuration\Skeleton\" />
+      <Folder Include="Configuration\Responses\" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
