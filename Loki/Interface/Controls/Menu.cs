@@ -85,7 +85,7 @@ namespace Loki.Interface.Controls {
                 unchecked { _currentHash += ctrl.GetHashCode(); }
             if (prev != _currentHash)
                 return true;
-
+            
             if (!Console.KeyAvailable)
                 return false;
 

@@ -38,7 +38,7 @@ namespace Loki.Interface {
 
             if (_delete) {
                 ConfigManager.Settings.Responses.Remove(_response);
-                ((ConfigMenu)Parent).AddResponses();
+                ((MainMenu)Parent).AddResponses();
                 return;
             }
 

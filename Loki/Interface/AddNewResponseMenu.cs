@@ -7,16 +7,21 @@ namespace Loki.Interface {
     class AddNewResponseMenu : Menu {
         internal AddNewResponseMenu(Menu parent) : base("Add new response", parent) {
             Options.Add(_type);
-            Options.Add(new Button("Ok", (sender) => {
+            Options.Add(new Button("Ok", sender => {
                 KeepDrawing = false;
+                _add = true;
             }));
         }
 
-        TextField _type = new TextField("Type:", "Text");
+        readonly TextField _type = new TextField("Type:", "Text");
+        bool _add;
 
         internal override void DrawMenu() {
             base.DrawMenu();
 
+            if (!_add)
+                return;
+            
             ResponseBase respbase;
             switch (_type.Text) {
                 case "Text":
@@ -29,7 +34,7 @@ namespace Loki.Interface {
             }
 
             ConfigManager.Settings.Responses.Add(respbase);
-            ((ConfigMenu)Parent).AddResponses();
+            ((MainMenu)Parent).AddResponses();
         }
     }
 }

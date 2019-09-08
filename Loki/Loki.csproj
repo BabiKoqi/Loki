@@ -57,12 +57,11 @@
         <Compile Include="Interface\Controls\Label.cs" />
         <Compile Include="Interface\Controls\Menu.cs" />
         <Compile Include="Interface\Controls\TextField.cs" />
-        <Compile Include="Interface\MainMenu.cs" />
         <Compile Include="Interface\Skeleton\Control.cs" />
         <Compile Include="Interface\Skeleton\MenuNesting.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Interface\ConfigMenu.cs" />
+        <Compile Include="Interface\MainMenu.cs" />
         <Compile Include="Configuration\Skeleton\Condition.cs" />
         <Compile Include="Configuration\ConfigManager.cs" />
         <Compile Include="Interface\Skeleton\Misc.cs" />
@@ -72,6 +71,9 @@
         <Compile Include="Configuration\Responses\FileResponse.cs" />
         <Compile Include="Interface\ResponseMenu.cs" />
         <Compile Include="Interface\AddNewResponseMenu.cs" />
+        <Compile Include="Weapons\Hook.cs" />
+        <Compile Include="Weapons\Launcher.cs" />
+        <Compile Include="Weapons\Server.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
