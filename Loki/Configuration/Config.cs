@@ -5,16 +5,13 @@ using Loki.Configuration.Skeleton;
 namespace Loki.Configuration {
     class Config {
         [JsonRequired]
-        public string Name { get; set; } = "LokiConfig1";
+        public string Name { get; set; } = "LokiConfig";
 
         [JsonRequired]
-        public string Author { get; set; } = "xsilent007";
+        public string Author { get; set; } = "User";
 
         [JsonRequired]
         public string ExecutablePath { get; set; }
-
-        //This can be used if Assembly.EntryPoint isn't the real entrypoint
-        public int RealEntryPointMDToken { get; set; }
 
         [JsonRequired]
         public IList<ResponseBase> Responses { get; set; } = new List<ResponseBase>();

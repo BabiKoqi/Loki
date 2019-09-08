@@ -1,11 +1,8 @@
-﻿using System;
-using Loki.Configuration;
-using Loki.Interface.Controls;
+﻿using Loki.Interface.Controls;
 
 namespace Loki.Interface {
     class MainMenu : Menu {
-        internal MainMenu(string name = "Loki v0.0.1 \\ALPHA/ | PRIVATE") : base(name) {
-            ConfigManager.Default();
+        internal MainMenu(string name = "Loki v0.1.6 \\ALPHA/ | PRIVATE") : base(name) {
             Options.Add(new ConfigMenu());
         }
     }

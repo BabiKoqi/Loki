@@ -7,7 +7,7 @@ namespace Loki.Interface.Controls {
     class TextField : Control {
         public override int GetHashCode() => EqualityComparer<string>.Default.GetHashCode(Text);
 
-        internal TextField(string name, string def = "") : base(name) => Text = def;
+        internal TextField(string name, string def = "", Menu parent = null) : base(name, parent) => Text = def;
 
         internal string Text {
             get => new string(_text.ToArray());

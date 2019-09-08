@@ -1,10 +1,13 @@
 ﻿using System;
+using Loki.Interface.Controls;
 
 namespace Loki.Interface.Skeleton {
     abstract class Control {
-        internal Control(string name) => Name = name;
+        Control(string name) => Name = name;
+        internal Control(string name, Menu parent) : this(name) => Parent = parent;
         
         internal string Name { get; }
+        internal Menu Parent { get; }
         internal virtual void OnLeft() { }
         internal virtual void OnRight() { }
         internal virtual void OnPressed() { }

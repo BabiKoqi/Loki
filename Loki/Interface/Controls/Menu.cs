@@ -4,7 +4,7 @@ using Loki.Interface.Skeleton;
 
 namespace Loki.Interface.Controls {
     class Menu : Control {
-        internal Menu(string name) : base(name) { }
+        internal Menu(string name, Menu parent = null) : base(name, parent) { }
 
         internal override void Draw(bool currentlySelected) => Console.WriteLine($"{Name} >>");
 
@@ -14,22 +14,22 @@ namespace Loki.Interface.Controls {
             Console.Clear();
         }
         
-        internal IList<Control> Options { get; } = new List<Control>();
+        internal IList<Control> Options { get; set; } = new List<Control>();
         internal bool KeepDrawing { get; set; } = true;
+        internal bool ForceRedraw { get; set; }
 
         int _currentIndex;
         int _currentHash;
 
         internal virtual void DrawMenu() {
             MenuNesting.Add(Name);
-            var reDraw = true;
             KeepDrawing = true;
             while (KeepDrawing) {
-                if (!NeedToRedraw(out var pressed, out var key) && !reDraw) {
+                if (!NeedToRedraw(out var pressed, out var key) && !ForceRedraw) {
                     continue;
                 }
 
-                reDraw = false;
+                ForceRedraw = false;
 
                 Console.Title = MenuNesting.Render();
                 Console.Clear();
@@ -46,7 +46,7 @@ namespace Loki.Interface.Controls {
                             break;
                         case ConsoleKey.Enter:
                             Options[_currentIndex].OnPressed();
-                            reDraw = true;
+                            ForceRedraw = true;
                             continue;
                         case ConsoleKey.LeftArrow:
                             Options[_currentIndex].OnLeft();
