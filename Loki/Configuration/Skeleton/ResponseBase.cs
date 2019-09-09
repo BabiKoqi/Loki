@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Net;
 using Newtonsoft.Json;
 
 namespace Loki.Configuration.Skeleton {
@@ -13,6 +12,6 @@ namespace Loki.Configuration.Skeleton {
         [JsonRequired]
         public virtual string Url { get; set; }
 
-        //public virtual IList<Condition> Conditions { get; set; } = new List<Condition>();
+        internal abstract void ProcessResponse(HttpListenerResponse response);
     }
 }

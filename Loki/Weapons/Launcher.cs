@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using Harmony;
 using Loki.Configuration;
@@ -10,6 +11,8 @@ namespace Loki.Weapons {
             var asm = TryLoadAssembly();
             if (asm == null)
                 return;
+
+            asm.EntryPoint.Invoke(null, null);
         }
 
         static bool _ran;
@@ -17,9 +20,15 @@ namespace Loki.Weapons {
             if (_ran)
                 return;
 
-            //Server.Start();
-            HarmonyInstance.Create("loki").PatchAll(typeof(Launcher).Assembly);
-            _ran = true;
+            try {
+                Server.Start();
+                HarmonyInstance.Create("loki").PatchAll(typeof(Launcher).Assembly);
+                _ran = true;
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex);
+                Console.ReadLine();
+            }
         }
 
         static Assembly TryLoadAssembly() {

@@ -1,18 +1,28 @@
 ﻿using Loki.Configuration;
 using Loki.Interface.Controls;
 using Loki.Interface.Skeleton;
+using Loki.Weapons;
 
 namespace Loki.Interface {
     class MainMenu : Menu {
         internal MainMenu() : base("Loki v0.2.7") {
-            Options.Add(new Button("Start!", sender => { }));
+            Options.Add(new Button("Start!", sender => {
+                Launcher.Launch();
+                KeepDrawing = false;
+            }));
             Options.Add(new Label(new string('=', 16)));
             
             Options.Add(new Button("Load config", sender => {
                 ConfigManager.Load(Misc.Prompt("Path to config file?", $"LokiConfig1.json"));
+                _name.Text = ConfigManager.Settings.Name;
+                _author.Text = ConfigManager.Settings.Author;
+                _exePath.Text = ConfigManager.Settings.ExecutablePath;
                 AddResponses();
             }));
             Options.Add(new Button("Save config", sender => {
+                ConfigManager.Settings.Name = _name.Text;
+                ConfigManager.Settings.Author = _author.Text;
+                ConfigManager.Settings.ExecutablePath = _exePath.Text;
                 ConfigManager.Save(Misc.Prompt("Where would you like to save the config?", $"{_name.Text}.json"));
             }));
             Options.Add(new AddNewResponseMenu(this));
@@ -32,10 +42,6 @@ namespace Loki.Interface {
             AddResponses();
             ForceRedraw = true;
             base.DrawMenu();
-
-            ConfigManager.Settings.Name = _name.Text;
-            ConfigManager.Settings.Author = _author.Text;
-            ConfigManager.Settings.ExecutablePath = _exePath.Text;
         }
 
         void RemoveExceptFirstX(int x) {
