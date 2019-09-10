@@ -7,7 +7,7 @@ namespace Loki.Interface {
     class MainMenu : Menu {
         internal MainMenu() : base("Loki v0.2.7") {
             Options.Add(new Button("Start!", sender => {
-                Launcher.Launch();
+                Launcher.Go();
                 KeepDrawing = false;
             }));
             Options.Add(new Label(new string('=', 16)));

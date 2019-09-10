@@ -75,6 +75,7 @@
     <Compile Include="Configuration\Responses\FileResponse.cs" />
     <Compile Include="Interface\ResponseMenu.cs" />
     <Compile Include="Interface\AddNewResponseMenu.cs" />
+    <Compile Include="Weapons\ExposedObject.cs" />
     <Compile Include="Weapons\Hook.cs" />
     <Compile Include="Weapons\Launcher.cs" />
     <Compile Include="Weapons\Server.cs" />
@@ -83,7 +84,6 @@
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.

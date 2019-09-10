@@ -1,36 +1,28 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using Harmony;
 using Loki.Configuration;
 
 namespace Loki.Weapons {
     static class Launcher {
-        internal static void Launch() {
-            RunOnce();
+        static Launcher() => HarmonyInstance.Create("loki").PatchAll(typeof(Launcher).Assembly);
+        
+        internal static void Go() {
             var asm = TryLoadAssembly();
             if (asm == null)
                 return;
 
-            asm.EntryPoint.Invoke(null, null);
+            Console.WriteLine("Starting target...");
+            new Thread(() => {
+                Thread.Sleep(2500); //Make sure ^ can be read
+                asm.EntryPoint.Invoke(null, null);
+            }) { IsBackground = true }.Start();
+
+            Server.Go();
         }
-
-        static bool _ran;
-        static void RunOnce() {
-            if (_ran)
-                return;
-
-            try {
-                Server.Start();
-                HarmonyInstance.Create("loki").PatchAll(typeof(Launcher).Assembly);
-                _ran = true;
-            }
-            catch (Exception ex) {
-                Console.WriteLine(ex);
-                Console.ReadLine();
-            }
-        }
-
+        
         static Assembly TryLoadAssembly() {
             try {
                 return Assembly.LoadFile(Path.GetFullPath(ConfigManager.Settings.ExecutablePath));
