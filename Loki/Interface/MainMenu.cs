@@ -5,7 +5,7 @@ using Loki.Weapons;
 
 namespace Loki.Interface {
     class MainMenu : Menu {
-        internal MainMenu() : base("Loki v0.2.7") {
+        internal MainMenu() : base("Loki v0.6.3 /ALPHA/") {
             Options.Add(new Button("Start!", sender => {
                 Launcher.Go();
                 KeepDrawing = false;
