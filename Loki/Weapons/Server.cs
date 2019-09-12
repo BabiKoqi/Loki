@@ -13,7 +13,12 @@ namespace Loki.Weapons {
             while (true) {
                 try {
                     var ctx = listener.GetContext();
-                    var res = ConfigManager.Settings.Responses.SingleOrDefault(r => r.Name == ctx.Request.Url.LocalPath);
+                    var orig = ctx.Request.Url.LocalPath;
+
+                    var index = orig.IndexOf('/', 1);
+                    orig = orig.Substring(index + 1, orig.Length - index - 1);
+                    
+                    var res = ConfigManager.Settings.Responses.SingleOrDefault(r => r.Url == orig);
                     if (res == null) {
                         ctx.Response.StatusCode = 404;
                         ctx.Response.Close();

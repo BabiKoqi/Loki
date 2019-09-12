@@ -75,7 +75,6 @@
     <Compile Include="Configuration\Responses\FileResponse.cs" />
     <Compile Include="Interface\ResponseMenu.cs" />
     <Compile Include="Interface\AddNewResponseMenu.cs" />
-    <Compile Include="Weapons\ExposedObject.cs" />
     <Compile Include="Weapons\Hook.cs" />
     <Compile Include="Weapons\Launcher.cs" />
     <Compile Include="Weapons\Server.cs" />

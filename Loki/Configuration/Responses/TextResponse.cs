@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text;
 using Loki.Configuration.Skeleton;
 using Newtonsoft.Json;
 
@@ -13,6 +14,7 @@ namespace Loki.Configuration.Responses {
 
         internal override void ProcessResponse(HttpListenerResponse response) {
             var stream = response.OutputStream;
+            response.ContentEncoding = response.ContentEncoding ?? Encoding.UTF8;
             var txt = response.ContentEncoding.GetBytes(Text);
             stream.Write(txt, 0, txt.Length);
         }

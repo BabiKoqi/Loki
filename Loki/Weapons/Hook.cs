@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
+using System.Reflection;
 using Harmony;
 using Loki.Configuration;
 
@@ -17,23 +17,24 @@ namespace Loki.Weapons {
             if (resp == null)
                 return;
 
-            dynamic exposed = new ExposedObject(__instance);
-            dynamic m_Info = new ExposedObject((object)exposed.m_Info);
-            dynamic Offset = new ExposedObject(m_Info.Offset);
-            
-            var syntax = (object)exposed.m_Syntax;
-            dynamic m_Syntax = new ExposedObject(syntax, syntax.GetType().BaseType);
-            
-            exposed.m_String = $"http://localhost/{resp.Name}";
-            
-            //15 16
-            m_Info.Host = "localhost"; //Used for direct IPs
-            m_Info.DnsSafeHost = "localhost"; //Used for domains that need to be resolved through a DNS server first
-            Offset.Path = (ushort)15;
-            Offset.End = (ushort)(15 + resp.Name.Length);
-            m_Syntax.m_Port = 80; //Force port to be 80
-            m_Syntax.m_Scheme = "http";
-            return;
+            var newuri = new Uri($"http://localhost/{__instance}");
+            TakeOver(__instance, newuri);
+        }
+        
+        static void TakeOver(object originst, object newinst) {
+            var origtype = originst.GetType();
+            var newtype = newinst.GetType();
+            if (origtype != newtype)
+                throw new InvalidOperationException("The types do not match");
+
+            var thisfields = origtype.GetFields((BindingFlags)(-1)).OrderBy(f => f.MetadataToken).ToArray();
+            var otherfields = newtype.GetFields((BindingFlags)(-1)).OrderBy(f => f.MetadataToken).ToArray();
+            for (var i = 0; i < thisfields.Length; i++) {
+                if (thisfields[i].IsInitOnly || thisfields[i].IsLiteral)
+                    continue;
+                
+                otherfields[i].SetValue(originst, thisfields[i].GetValue(newinst));
+            }
         }
     }
 }
