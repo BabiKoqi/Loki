@@ -5,7 +5,7 @@ using Loki.Weapons;
 
 namespace Loki.Interface {
     class MainMenu : Menu {
-        internal MainMenu() : base("Loki v0.6.3 /ALPHA/") {
+        internal MainMenu() : base("Loki by xsilent007 | v1.0.0 | github.com/xsilent007/Loki") {
             Options.Add(new Button("Start!", sender => {
                 Launcher.Go();
                 KeepDrawing = false;
@@ -38,10 +38,9 @@ namespace Loki.Interface {
         readonly TextField _author;
         readonly TextField _exePath;
 
-        internal override void DrawMenu() {
+        protected override void UpdateItems() {
             AddResponses();
-            ForceRedraw = true;
-            base.DrawMenu();
+            base.UpdateItems();
         }
 
         void RemoveExceptFirstX(int x) {

@@ -21,6 +21,7 @@ namespace Loki.Weapons {
             TakeOver(__instance, newuri);
         }
         
+        //This is hacky as hell...
         static void TakeOver(object originst, object newinst) {
             var origtype = originst.GetType();
             var newtype = newinst.GetType();

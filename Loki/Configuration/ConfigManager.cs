@@ -7,10 +7,6 @@ namespace Loki.Configuration {
     static class ConfigManager {
         internal static Config Settings { get; set; } = new Config();
 
-        internal static void Add(ResponseBase resp) => Settings.Responses.Add(resp);
-        internal static void Remove(ResponseBase resp) => Settings.Responses.Remove(resp);
-        internal static void RemoveAt(int index) => Settings.Responses.RemoveAt(index);
-
         internal static void Save(string path) {
             if (path == string.Empty)
                 return;
@@ -22,6 +18,9 @@ namespace Loki.Configuration {
             if (path == string.Empty)
                 return;
 
+            if (!File.Exists(path))
+                return;
+            
             Settings = JsonConvert.DeserializeObject<Config>(File.ReadAllText(path));
         }
     }

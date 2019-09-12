@@ -10,7 +10,6 @@ namespace Loki.Interface {
 
         internal ResponseMenu(Menu parent, ResponseBase resp) : base(resp.Name, parent) => _response = resp;
 
-        TextField _url;
         bool _delete;
         readonly IDictionary<TextField, PropertyInfo> _dict = new Dictionary<TextField, PropertyInfo>();
 
@@ -18,9 +17,6 @@ namespace Loki.Interface {
             Options.Clear();
             _dict.Clear();
             Options.Add(new Label("Type: " + _response.Type));
-            Options.Add(_url = new TextField("Url:", _response.Url ?? string.Empty));
-
-            //TODO: Add conditions
 
             foreach (var prop in _response.GetType().GetProperties()) {
                 if (prop.GetGetMethod().IsVirtual || prop.PropertyType != typeof(string))
@@ -42,7 +38,6 @@ namespace Loki.Interface {
                 return;
             }
 
-            _response.Url = _url.Text;
             foreach (var kp in _dict)
                 kp.Value.SetValue(_response, kp.Key.Text);
         }

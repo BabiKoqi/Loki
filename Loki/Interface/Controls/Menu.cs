@@ -63,6 +63,7 @@ namespace Loki.Interface.Controls {
                     }
                 }
 
+                UpdateItems();
                 NormalizeIndex();
                 for (var i = 0; i < Options.Count; i++) {
                     if (_currentIndex == i) {
@@ -74,6 +75,12 @@ namespace Loki.Interface.Controls {
                 }
             }
             MenuNesting.Remove();
+        }
+
+        protected virtual void UpdateItems() {
+            _currentHash = 0;
+            foreach (var ctrl in Options)
+                unchecked { _currentHash += ctrl.GetHashCode(); }
         }
 
         bool NeedToRedraw(out bool pressed, out ConsoleKeyInfo? keyPressed) {

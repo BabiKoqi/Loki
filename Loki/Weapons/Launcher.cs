@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Harmony;
@@ -17,11 +18,12 @@ namespace Loki.Weapons {
                 return;
 
             RealAssembly = asm;
-
-            Console.WriteLine("Starting target...");
+            Console.Clear();
+            Console.Title = string.Empty;
+            
             new Thread(() => {
                 Thread.Sleep(1000); //Make sure ^ can be read
-                asm.EntryPoint.Invoke(null, new object[] { new string[] {  } }); //This will need to be changed probably...
+                asm.EntryPoint.Invoke(null, new object[] { ConfigManager.Settings.Parameters.ToArray() }); //This will need to be changed probably...
             }) { IsBackground = true }.Start();
 
             Server.Go();
