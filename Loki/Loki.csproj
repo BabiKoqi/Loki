@@ -26,7 +26,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -75,7 +75,7 @@
     <Compile Include="Configuration\Responses\FileResponse.cs" />
     <Compile Include="Interface\ResponseMenu.cs" />
     <Compile Include="Interface\AddNewResponseMenu.cs" />
-    <Compile Include="Weapons\Hook.cs" />
+    <Compile Include="Weapons\Hooks.cs" />
     <Compile Include="Weapons\Launcher.cs" />
     <Compile Include="Weapons\Server.cs" />
   </ItemGroup>

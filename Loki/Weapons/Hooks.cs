@@ -8,7 +8,7 @@ namespace Loki.Weapons {
     [HarmonyPatch(typeof(Uri))]
     [HarmonyPatch("CreateThis")]
     [HarmonyPatch(new [] { typeof(string), typeof(bool), typeof(UriKind) })]
-    class Hook {
+    class UriHook {
         static void Postfix(Uri __instance) {
             var conf = ConfigManager.Settings.Responses;
             var uri = __instance.IdnHost + __instance.LocalPath;
@@ -36,5 +36,17 @@ namespace Loki.Weapons {
                 otherfields[i].SetValue(originst, thisfields[i].GetValue(newinst));
             }
         }
+    }
+
+    [HarmonyPatch(typeof(Assembly))]
+    [HarmonyPatch("GetCallingAssembly")]
+    class GetCallingAssemblyHook {
+        static void Postfix(ref Assembly __result) => __result = Launcher.RealAssembly;
+    }
+    
+    [HarmonyPatch(typeof(Assembly))]
+    [HarmonyPatch("GetEntryAssembly")]
+    class GetEntryAssemblyHook {
+        static void Postfix(ref Assembly __result) => __result = Launcher.RealAssembly;
     }
 }
